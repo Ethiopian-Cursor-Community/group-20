@@ -1,0 +1,27 @@
+{
+  "name": "hackathon-agent",
+  "version": "1.0.0",
+  "description": "Ethiopian Cursor Community hackathon — Cursor Agent SDK starter",
+  "type": "module",
+  "scripts": {
+    "verify": "tsx src/verify-setup.ts",
+    "example:prompt": "tsx src/examples/one-shot-prompt.ts",
+    "example:stream": "tsx src/examples/streaming-agent.ts",
+    "example:cloud": "tsx src/examples/cloud-agent.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": ["cursor", "agent-sdk", "hackathon"],
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@cursor/sdk": "^1.0.13",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
+  }
+}
