@@ -1,9 +1,10 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useAuth, authErrorMessage } from "@/features/auth/AuthProvider";
+import { useAuth } from "@/features/auth/AuthProvider";
+import { authErrorMessage } from "@/features/auth/authErrors";
 import type { AppRole } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function AuthPage() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const { signIn, signUp, primaryRole, user } = useAuth();
+  const { signIn, signUp, primaryRole, user, loading: authLoading } = useAuth();
 
   const defaultMode = params.get("mode") === "signup" ? "signup" : "signin";
   const defaultRole = (params.get("role") as AppRole) || "influencer";
@@ -24,30 +25,30 @@ export default function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [role, setRole] = useState<AppRole>(defaultRole);
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const dashboardForRole = (r: AppRole | null) =>
     r === "admin" ? "/admin" : r === "advertiser" ? "/advertiser" : "/influencer";
 
   const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSubmitting(true);
     try {
-      await signIn(email, password);
+      const loggedInRole = await signIn(email, password);
       toast.success("Welcome back!");
-      navigate(dashboardForRole(primaryRole ?? role), { replace: true });
+      navigate(dashboardForRole(loggedInRole ?? role), { replace: true });
     } catch (err) {
       toast.error(authErrorMessage(err as Error));
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
   const handleSignUp = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSubmitting(true);
     try {
-      const { needsEmailConfirmation } = await signUp({
+      const { needsEmailConfirmation, role: signedUpRole } = await signUp({
         email,
         password,
         role,
@@ -64,16 +65,17 @@ export default function AuthPage() {
       }
 
       toast.success("Account created!");
-      navigate(role === "advertiser" ? "/advertiser" : "/influencer/onboarding", { replace: true });
+      const destRole = signedUpRole ?? role;
+      navigate(destRole === "advertiser" ? "/advertiser" : "/influencer/onboarding", { replace: true });
     } catch (err) {
       toast.error(authErrorMessage(err as Error));
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
-  if (user) {
-    navigate(dashboardForRole(primaryRole ?? "influencer"), { replace: true });
+  if (!authLoading && user) {
+    return <Navigate to={dashboardForRole(primaryRole)} replace />;
   }
 
   return (
@@ -116,7 +118,7 @@ export default function AuthPage() {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full" disabled={submitting}>
                     Sign in
                   </Button>
                 </form>
@@ -177,7 +179,7 @@ export default function AuthPage() {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full" disabled={submitting}>
                     Create account
                   </Button>
                 </form>

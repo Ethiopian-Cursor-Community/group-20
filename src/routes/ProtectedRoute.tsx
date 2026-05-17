@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function ProtectedRoute({ children, roles }: Props) {
-  const { user, loading, hasRole, primaryRole } = useAuth();
+  const { user, loading, hasRole, primaryRole, roles: userRoles } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -22,6 +22,16 @@ export default function ProtectedRoute({ children, roles }: Props) {
 
   if (!user) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
+  }
+
+  if (userRoles.length === 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-8 text-center">
+        <p className="max-w-md text-muted-foreground">
+          Your account is missing a role. Re-run Supabase migrations or sign up again.
+        </p>
+      </div>
+    );
   }
 
   if (roles && roles.length > 0 && !roles.some((r) => hasRole(r))) {
