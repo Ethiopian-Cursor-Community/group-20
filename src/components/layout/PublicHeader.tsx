@@ -17,17 +17,26 @@ export default function PublicHeader() {
     <motion.header
       initial={{ y: -12, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-md"
+      className="sticky top-0 z-50 border-b border-md-outline/20 bg-background/75 backdrop-blur-xl"
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="font-display text-xl font-bold text-navy">
+        <Link
+          to="/"
+          className="font-display text-xl font-medium tracking-tight text-foreground"
+        >
           Influencer<span className="text-primary">Hub</span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex">
-          <Link to="/directory" className="hover:text-foreground">
+        <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
+          <Link
+            to="/directory"
+            className="rounded-full px-4 py-2 text-md-on-surface-variant transition-colors duration-200 ease-md hover:bg-primary/10 hover:text-primary"
+          >
             Directory
           </Link>
-          <Link to="/pricing" className="hover:text-foreground">
+          <Link
+            to="/pricing"
+            className="rounded-full px-4 py-2 text-md-on-surface-variant transition-colors duration-200 ease-md hover:bg-primary/10 hover:text-primary"
+          >
             Pricing
           </Link>
         </nav>

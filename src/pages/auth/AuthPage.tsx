@@ -79,11 +79,32 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-primary/5 px-4">
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-display text-2xl text-navy">InfluencerHub</CardTitle>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
+      {/* MD3 atmospheric blur layers — give the auth surface a sense of place */}
+      <div
+        aria-hidden="true"
+        className="md-blur-shape -left-24 top-1/4 h-80 w-80 bg-primary/25"
+      />
+      <div
+        aria-hidden="true"
+        className="md-blur-shape -right-24 bottom-1/4 h-80 w-80 bg-md-tertiary/20"
+      />
+      <div
+        aria-hidden="true"
+        className="md-blur-shape left-1/3 top-1/2 h-96 w-96 -translate-y-1/2 bg-secondary/60"
+      />
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.2, 0, 0, 1] }}
+        className="relative w-full max-w-md"
+      >
+        <Card className="rounded-2xl shadow-md-2">
+          <CardHeader className="pb-2 pt-8 text-center">
+            <CardTitle className="font-display text-3xl font-medium tracking-tight text-foreground">
+              Influencer<span className="text-primary">Hub</span>
+            </CardTitle>
             <CardDescription>Ethiopia&apos;s creator marketplace</CardDescription>
           </CardHeader>
           <CardContent>
@@ -127,7 +148,9 @@ export default function AuthPage() {
               <TabsContent value="signup">
                 <form onSubmit={handleSignUp} className="mt-4 space-y-4">
                   <fieldset className="space-y-2">
-                    <legend className="text-sm font-medium">I am a…</legend>
+                    <legend className="text-sm font-medium text-md-on-surface-variant">
+                      I am a…
+                    </legend>
                     <div className="grid grid-cols-2 gap-2">
                       {(["influencer", "advertiser"] as AppRole[]).map((r) => (
                         <Button
@@ -135,6 +158,7 @@ export default function AuthPage() {
                           type="button"
                           variant={role === r ? "default" : "outline"}
                           onClick={() => setRole(r)}
+                          className="capitalize"
                         >
                           {r}
                         </Button>

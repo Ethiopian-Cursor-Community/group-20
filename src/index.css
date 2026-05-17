@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,39 +6,83 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 215 25% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
-    --primary: 217 91% 53%;
+    /* Material You (M3) — Purple seed (#6750A4)
+       Tokens are remapped onto the existing shadcn variable names so the
+       whole app picks up the new palette without per-file rewrites. */
+    --background: 300 50% 99%; /* #FFFBFE — tonal surface, never pure white */
+    --foreground: 270 8% 12%; /* #1C1B1F — warm near-black */
+
+    --card: 285 56% 95%; /* #F3EDF7 — surface container */
+    --card-foreground: 270 8% 12%;
+
+    --primary: 258 33% 48%; /* #6750A4 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 215 25% 25%;
-    --accent: 38 92% 50%;
-    --accent-foreground: 26 83% 14%;
-    --navy: 199 89% 24%;
+
+    --secondary: 270 55% 92%; /* #E8DEF8 — secondary container */
+    --secondary-foreground: 270 20% 14%; /* #1D192B */
+
+    --accent: 343 19% 43%; /* #7D5260 — tertiary (mauve) */
+    --accent-foreground: 0 0% 100%;
+
+    --navy: 343 19% 43%; /* alias of tertiary so legacy `bg-navy` keeps working */
     --navy-foreground: 0 0% 100%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --destructive: 0 84% 60%;
+
+    --muted: 285 30% 90%; /* #E7E0EC — surface container low */
+    --muted-foreground: 270 6% 30%; /* #49454F — on surface variant */
+
+    --destructive: 4 75% 47%; /* #B3261E */
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 53%;
-    --radius: 0.75rem;
+
+    --border: 270 6% 47%; /* #79747E — outline */
+    --input: 285 30% 90%;
+    --ring: 258 33% 48%;
+    --radius: 1rem; /* 16px — MD3 medium; cards override to 24px */
+
+    /* MD3-specific extras consumed via Tailwind `md-*` tokens */
+    --md-tertiary: 343 19% 43%;
+    --md-surface-container: 285 56% 95%;
+    --md-surface-container-low: 285 30% 90%;
+    --md-on-surface-variant: 270 6% 30%;
+    --md-outline: 270 6% 47%;
   }
 
   * {
     @apply border-border;
   }
 
+  html {
+    /* MD3 signature easing for every CSS transition */
+    --md-ease: cubic-bezier(0.2, 0, 0, 1);
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 0% 0%, hsl(var(--secondary) / 0.45) 0%, transparent 35%),
+      radial-gradient(circle at 100% 0%, hsl(var(--md-tertiary) / 0.18) 0%, transparent 40%);
+    background-attachment: fixed;
   }
 
   h1,
   h2,
-  h3 {
-    @apply font-display;
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer utilities {
+  /* Re-usable atmospheric blur shapes — used across hero / pricing / auth */
+  .md-blur-shape {
+    @apply pointer-events-none absolute rounded-full blur-3xl mix-blend-multiply;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

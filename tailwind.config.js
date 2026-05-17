@@ -5,8 +5,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
+        // Material Design 3 canonical typeface
+        sans: ["Roboto", "system-ui", "sans-serif"],
+        display: ["Roboto", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -42,14 +43,35 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        // MD3-specific aliases that aren't covered by the shadcn names
+        md: {
+          tertiary: "hsl(var(--md-tertiary))",
+          "surface-container": "hsl(var(--md-surface-container))",
+          "surface-container-low": "hsl(var(--md-surface-container-low))",
+          "on-surface-variant": "hsl(var(--md-on-surface-variant))",
+          outline: "hsl(var(--md-outline))",
+        },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        // MD3 shape scale
+        sm: "0.5rem", // 8px — extra small
+        md: "0.75rem", // 12px — small
+        lg: "var(--radius)", // 16px — medium (default)
+        xl: "1.5rem", // 24px — large (default card)
+        "2xl": "1.75rem", // 28px — extra large (dialogs)
+        "3xl": "2rem", // 32px — xxl
+        "4xl": "3rem", // 48px — hero containers
       },
       boxShadow: {
-        card: "0 1px 3px rgba(12, 74, 110, 0.06), 0 8px 24px rgba(12, 74, 110, 0.08)",
+        // MD3 elevation — soft, diffuse, never harsh
+        "md-1": "0 1px 2px hsl(0 0% 0% / 0.05), 0 1px 3px hsl(0 0% 0% / 0.06)",
+        "md-2": "0 2px 4px hsl(0 0% 0% / 0.06), 0 4px 12px hsl(0 0% 0% / 0.08)",
+        "md-3": "0 4px 8px hsl(0 0% 0% / 0.08), 0 12px 24px hsl(0 0% 0% / 0.1)",
+        card: "0 1px 2px hsl(258 33% 20% / 0.05), 0 4px 12px hsl(258 33% 20% / 0.06)",
+      },
+      transitionTimingFunction: {
+        // MD3 "Emphasized Decelerate"
+        md: "cubic-bezier(0.2, 0, 0, 1)",
       },
     },
   },

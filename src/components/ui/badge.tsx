@@ -2,16 +2,21 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition",
+  "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium tracking-[0.01em] transition-colors duration-200 ease-md",
   {
     variants: {
       variant: {
-        default: "border-transparent bg-primary text-primary-foreground",
-        secondary: "border-transparent bg-secondary text-secondary-foreground",
-        accent: "border-transparent bg-accent text-accent-foreground",
-        outline: "text-foreground",
-        verified: "border-transparent bg-primary/10 text-primary",
-        pending: "border-transparent bg-accent/15 text-accent-foreground",
+        // Filled — primary
+        default: "bg-primary text-primary-foreground",
+        // Tonal — uses the MD3 secondary container
+        secondary: "bg-secondary text-secondary-foreground",
+        // Tertiary tonal — useful for "popular"/highlight chips
+        accent: "bg-md-tertiary text-white",
+        // Outlined — quiet, sits on any surface
+        outline: "border border-md-outline text-foreground",
+        // State chips
+        verified: "bg-primary/15 text-primary",
+        pending: "bg-md-tertiary/15 text-md-tertiary",
       },
     },
     defaultVariants: { variant: "default" },
